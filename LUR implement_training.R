@@ -3,7 +3,7 @@
 install.packages("tidyverse")
 install.packages("car")
 install.packages("ape")
-install.packges("DAAG")
+install.packages("DAAG")
 library(tidyverse)
 library(car)
 library(ape)
@@ -48,7 +48,7 @@ cor(loocv_PM$PM,loocv_PM$cvpred)**2
 # mean studentized prediction residuals (sd used n-1)
 M_PM<-rstudent(PM3)
 mean(M_PM)
-# root mean square of studendardized
+# root mean square of studentized
 sqrt(mean(M_PM^2))
 
 

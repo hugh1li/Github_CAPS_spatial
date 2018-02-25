@@ -4,28 +4,26 @@ make_lur = function(dat1,
                },
                special = c('Latitude', 'Longitude'),
                dep_col) {
-  # exclude var. you think not related to your y
+  # Note:
+  # Usage of the make_lur.R function requires citation of the following paper:
+  # Li, H.Z., Dallmann, T.R., Gu, P., Presto, A.A., 2016. Application of mobile sampling to investigate spatial variation in fine particle composition. Atmospheric Environment 142, 71–82. https://doi.org/10.1016/j.atmosenv.2016.07.042
+  
+  # dat1: your dataframe imported from csv
+  # exclude x var. you think not related to your y
   # special includes varibles you cannot assign a prior directional relationship to y
   # dep_col:  column index of the start of your dependent var.
   params = names(dat1)
   params1 = params # just to get the listed orders of these vars
-  
   params = params[-c(dep_col:ncol(dat1))]
-  
   params = setdiff(params, exclude)
   
-  
-  
-  
-  
-  # Remove parameters with fewer than 10% row length.
+  # Remove parameters with unique values less than 10% row size.
   # Must start from the last parameter to avoid skipping items.
   for (i in length(params):1) {
     if (length(unique(dat1[[params[i]]])) < 0.1 * nrow(dat1)) {
       params = params[-i]
     }
   }
-  
   
   nparam = length(params)
   stopifnot(nparam > 0)
@@ -38,7 +36,7 @@ make_lur = function(dat1,
   unused = params
   used = {
   }
-  # adj R^2 of the currently-selescted model.
+  # adj R^2 of the currently-selected model.
   adjr2 = 0
   # The history of adj R^2 improvements for debugging.
   adjr2diff = {
@@ -92,7 +90,6 @@ make_lur = function(dat1,
         unused = unused[-maxi]
         ap = ap + 1
         
-        
       } else if (coeff[maxi] < 0) {
         used = c(used, unused[maxi])
         unused = unused[-maxi]
@@ -111,7 +108,6 @@ make_lur = function(dat1,
         used = c(used, unused[maxi])
         unused = unused[-maxi]
         ap = ap + 1
-        
       }
     }
     
@@ -122,7 +118,6 @@ make_lur = function(dat1,
     if (maxv < 0) {
       break
     }
-    
     
     coefficients = FALSE
     ncoeff <-
@@ -161,7 +156,6 @@ make_lur = function(dat1,
           coeff <- coeff[-maxi]
         }
         
-        
       } else if (coeff[maxi] < 0) {
         used = c(used, unused[maxi])
         unused = unused[-maxi]
@@ -188,7 +182,6 @@ make_lur = function(dat1,
       }
     }
     
-    
     if (maxv < 0) {
       break
     }
@@ -214,6 +207,5 @@ make_lur = function(dat1,
   return(list(formula = model, summary = summary(lm(
     formula(model), dat1
   )), excel_column_ID = ID))
-  
   
 }

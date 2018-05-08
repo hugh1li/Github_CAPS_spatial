@@ -12,6 +12,10 @@ make_lur = function(dat1,
   # exclude x var. you think not related to your y
   # special includes varibles you cannot assign a prior directional relationship to y
   # dep_col:  column index of the start of your dependent var.
+  
+  # remove duplicate columns in your dat1 (in case singularity issues happen during regression)
+  dat1 = dat1[!duplicated(lapply(dat1, summary))]
+  
   params = names(dat1)
   params1 = params # just to get the listed orders of these vars
   params = params[-c(dep_col:ncol(dat1))]

@@ -13,6 +13,10 @@ make_lur = function(dat1,
   # special includes varibles you cannot assign a prior directional relationship to y
   # dep_col:  column index of the start of your dependent var.
   
+  # common errors:
+  # “Error: nparam > 0 is not TRUE” : few distinct values in each variable.
+  # ""Error in summary(t)$coefficients[ap + 1, 1] : subscript out of bounds" : two columns in your LUR input are indentical.
+  
   # remove duplicate columns in your dat1 (in case singularity issues happen during regression)
   dat1 = dat1[!duplicated(lapply(dat1, summary))]
   
